@@ -68,8 +68,8 @@ public class DKImageGroupDataManagerConfiguration: NSObject, NSCopying {
 open class DKImageGroupDataManager: DKImageBaseManager, PHPhotoLibraryChangeObserver {
 
     public var groupIds: [String]?
-    private var groups: [String : DKAssetGroup]?
-    private var assets = [String: DKAsset]()
+    public var groups: [String : DKAssetGroup]?
+    public var assets = [String: DKAsset]()
     
     private let configuration: DKImageGroupDataManagerConfiguration
     
