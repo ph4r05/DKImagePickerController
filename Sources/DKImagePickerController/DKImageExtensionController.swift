@@ -78,14 +78,15 @@ public class DKImageExtensionController: NSObject {
     
     private static let checkDefaultExtensions: Void = {
         let defaultClasses = [
-            "DKImagePickerController.DKImageExtensionGallery",
-            "DKImagePickerController.DKImageExtensionCamera",
-            "DKImagePickerController.DKImageExtensionInlineCamera",
-            "DKImagePickerController.DKImageExtensionPhotoCropper",
+            "DKImageExtensionGallery",
+            "DKImageExtensionCamera",
+            "DKImageExtensionInlineCamera",
+            "DKImageExtensionPhotoCropper",
         ]
         
         for defaultClass in defaultClasses {
-            if let defaultClass = NSClassFromString(defaultClass) {
+            let fullClassName = String(format:"%@.%@", getModuleName(), defaultClass)
+            if let defaultClass = NSClassFromString(fullClassName) {
                 if let defaultClass = (defaultClass as AnyObject) as? NSObjectProtocol {
                     if defaultClass.responds(to: #selector(DKImageBaseExtension.registerAsDefaultExtension)) {
                         defaultClass.perform(#selector(DKImageBaseExtension.registerAsDefaultExtension))
@@ -155,6 +156,10 @@ public class DKImageExtensionController: NSObject {
     
     internal class func registerDefaultExtension(extensionClass: DKImageBaseExtension.Type, for type: DKImageExtensionType) {
         DKImageExtensionController.defaultExtensions[type] = extensionClass
+    }
+    
+    static func getModuleName() -> String {
+        return String(reflecting: DKImageExtensionController.self).components(separatedBy:".")[0]
     }
 
 }
